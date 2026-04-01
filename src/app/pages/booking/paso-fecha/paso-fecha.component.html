@@ -1,0 +1,33 @@
+<div class="paso">
+  <h2>¿Cuándo querés el turno?</h2>
+  <p class="paso-sub">Elegí una fecha y el horario disponible</p>
+
+  <div class="fecha-picker">
+    <label>Fecha</label>
+    <input
+      type="date"
+      [min]="minFecha"
+      [value]="fechaSeleccionada"
+      (change)="onFechaCambio($any($event.target).value)"
+    />
+  </div>
+
+  <div class="loading" *ngIf="loading">Buscando turnos disponibles...</div>
+
+  <div class="no-slots" *ngIf="!loading && fechaSeleccionada && slots.length === 0">
+    No hay turnos disponibles para este día. Probá otra fecha.
+  </div>
+
+  <div class="slots-grid" *ngIf="!loading && slots.length > 0">
+    <div
+      *ngFor="let s of slots"
+      class="slot"
+      [class.selected]="state.slot?.fechaHora === s.fechaHora"
+      (click)="seleccionarSlot(s)"
+    >
+      {{ s.etiqueta }}
+    </div>
+  </div>
+
+  <button class="btn-volver" (click)="volver()">← Volver</button>
+</div>

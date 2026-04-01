@@ -1,0 +1,51 @@
+<div class="booking-wrapper">
+
+  <div class="loading-screen" *ngIf="loading">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="error-screen" *ngIf="error">
+    <p>No encontramos este negocio. Verificá el enlace.</p>
+  </div>
+
+  <ng-container *ngIf="!loading && !error">
+
+    <!-- Header del negocio -->
+    <header class="booking-header">
+      <div class="header-inner">
+        <div class="negocio-info">
+          <div class="negocio-avatar">
+            <img *ngIf="state.tenant?.logoUrl" [src]="state.tenant.logoUrl" alt="logo"/>
+            <span *ngIf="!state.tenant?.logoUrl">{{ state.tenant?.nombre?.charAt(0) }}</span>
+          </div>
+          <div>
+            <h1>{{ state.tenant?.nombre }}</h1>
+            <p *ngIf="state.tenant?.telefono">{{ state.tenant?.telefono }}</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Stepper -->
+    <div class="stepper">
+      <div
+        *ngFor="let paso of pasos; let i = index"
+        class="step"
+        [class.active]="i === getPasoActivo()"
+        [class.done]="i < getPasoActivo()"
+      >
+        <div class="step-circle">
+          <span *ngIf="i >= getPasoActivo()">{{ i + 1 }}</span>
+          <span *ngIf="i < getPasoActivo()">✓</span>
+        </div>
+        <span class="step-label">{{ paso.label }}</span>
+      </div>
+    </div>
+
+    <!-- Contenido del paso activo -->
+    <div class="booking-content">
+      <router-outlet />
+    </div>
+
+  </ng-container>
+</div>

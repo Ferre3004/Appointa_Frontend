@@ -1,0 +1,204 @@
+<div class="onboarding-wrapper">
+  <div class="onboarding-card">
+
+    <!-- Header -->
+    <div class="ob-header">
+      <div class="logo-circle">A</div>
+      <div>
+        <h1>¡Bienvenido/a, {{ usuario?.nombre }}!</h1>
+        <p>Configuremos tu negocio en 3 pasos rápidos</p>
+      </div>
+      <button class="btn-omitir" (click)="omitir()">Omitir →</button>
+    </div>
+
+    <!-- Stepper -->
+    <div class="stepper">
+      <div class="step" *ngFor="let s of [
+        { n: 1, label: 'Servicios'     },
+        { n: 2, label: 'Profesionales' },
+        { n: 3, label: 'Horarios'      }
+      ]"
+        [class.active]="paso === s.n"
+        [class.done]="paso > s.n"
+      >
+        <div class="step-circle">{{ paso > s.n ? '✓' : s.n }}</div>
+        <span class="step-label">{{ s.label }}</span>
+      </div>
+    </div>
+
+    <!-- ── Paso 1: Servicios ── -->
+    <div class="paso-content" *ngIf="paso === 1">
+      <h2>¿Qué servicios ofrecés?</h2>
+      <p class="paso-desc">Agregá los servicios que tu negocio ofrece. Podés editarlos después.</p>
+
+      <div class="items-list" *ngIf="servicios.length > 0">
+        <div class="item-row" *ngFor="let s of servicios; let i = index">
+          <div class="item-info">
+            <span class="item-nombre">{{ s.nombre }}</span>
+            <span class="item-meta">{{ s.duracionMinutos }} min
+              <span *ngIf="s.precio"> · ${{ s.precio | number:'1.0-0' }}</span>
+            </span>
+          </div>
+          <button class="btn-remove" (click)="eliminarServicio(i)">✕</button>
+        </div>
+      </div>
+
+      <div class="form-inline" *ngIf="mostrarFormServicio" [formGroup]="formServicio">
+        <div class="form-inline-fields">
+          <input type="text" formControlName="nombre" placeholder="Nombre del servicio *"
+            [class.error]="formServicio.get('nombre')?.invalid && formServicio.get('nombre')?.touched"/>
+          <input type="number" formControlName="duracionMinutos" placeholder="Minutos *" min="5" step="5"
+            style="width: 100px"/>
+          <input type="number" formControlName="precio" placeholder="Precio (opcional)"/>
+        </div>
+        <div class="form-inline-actions">
+          <button class="btn-secondary-sm" (click)="mostrarFormServicio = false">Cancelar</button>
+          <button class="btn-primary-sm" (click)="agregarServicio()" [disabled]="saving">
+            {{ saving ? '...' : 'Agregar' }}
+          </button>
+        </div>
+      </div>
+
+      <button class="btn-agregar" *ngIf="!mostrarFormServicio"
+        (click)="mostrarFormServicio = true">
+        + Agregar servicio
+      </button>
+
+      <div class="alert-error" *ngIf="error">{{ error }}</div>
+
+      <div class="paso-footer">
+        <span></span>
+        <button class="btn-siguiente" (click)="siguiente()">
+          Siguiente → Profesionales
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Paso 2: Profesionales ── -->
+    <div class="paso-content" *ngIf="paso === 2">
+      <h2>¿Quiénes trabajan en tu negocio?</h2>
+      <p class="paso-desc">Agregá los profesionales que van a atender los turnos.</p>
+
+      <div class="items-list" *ngIf="profesionales.length > 0">
+        <div class="item-row" *ngFor="let p of profesionales; let i = index">
+          <div class="prof-avatar-sm">{{ p.nombre.charAt(0) }}</div>
+          <div class="item-info">
+            <span class="item-nombre">{{ p.nombre }}</span>
+            <span class="item-meta" *ngIf="p.descripcion">{{ p.descripcion }}</span>
+          </div>
+          <button class="btn-remove" (click)="eliminarProfesional(i)">✕</button>
+        </div>
+      </div>
+
+      <div class="form-inline" *ngIf="mostrarFormProfesional" [formGroup]="formProfesional">
+        <div class="form-inline-fields">
+          <input type="text" formControlName="nombre" placeholder="Nombre *"
+            [class.error]="formProfesional.get('nombre')?.invalid && formProfesional.get('nombre')?.touched"/>
+          <input type="text" formControlName="descripcion" placeholder="Descripción (opcional)"/>
+        </div>
+        <div class="form-inline-actions">
+          <button class="btn-secondary-sm" (click)="mostrarFormProfesional = false">Cancelar</button>
+          <button class="btn-primary-sm" (click)="agregarProfesional()" [disabled]="saving">
+            {{ saving ? '...' : 'Agregar' }}
+          </button>
+        </div>
+      </div>
+
+      <button class="btn-agregar" *ngIf="!mostrarFormProfesional"
+        (click)="mostrarFormProfesional = true">
+        + Agregar profesional
+      </button>
+
+      <div class="alert-error" *ngIf="error">{{ error }}</div>
+
+      <div class="paso-footer">
+        <button class="btn-volver" (click)="paso = 1">← Volver</button>
+        <button class="btn-siguiente" (click)="siguiente()">
+          Siguiente → Horarios
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Paso 3: Horarios ── -->
+    <div class="paso-content" *ngIf="paso === 3">
+      <h2>¿Cuándo estás disponible?</h2>
+      <p class="paso-desc">Configurá los días y horarios de atención para cada profesional.</p>
+
+      <!-- Horarios existentes agrupados por profesional -->
+      <div class="prof-horarios-group" *ngFor="let p of profesionales">
+        <ng-container *ngIf="getHorariosPorProfesional(p.id).length > 0">
+          <div class="prof-group-header">
+            <div class="prof-avatar-sm">{{ p.nombre.charAt(0) }}</div>
+            <span>{{ p.nombre }}</span>
+          </div>
+          <div class="dias-chips-row">
+            <div class="dia-horario-chip" *ngFor="let d of getHorariosPorProfesional(p.id)">
+              <span class="dia-nombre">{{ d.diaNombre }}</span>
+              <span class="dia-horas">{{ d.horaInicio }} – {{ d.horaFin }}</span>
+              <button class="chip-delete" (click)="eliminarHorario(d.id)">✕</button>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- Formulario inline de horario -->
+      <div class="form-horario" *ngIf="mostrarFormHorario" [formGroup]="formHorario">
+        <div class="field">
+          <label>Profesional *</label>
+          <select formControlName="profesionalId">
+            <option value="">Seleccioná</option>
+            <option *ngFor="let p of profesionales" [value]="p.id">{{ p.nombre }}</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Días *</label>
+          <div class="dias-acciones">
+            <button type="button" class="btn-dias-link" (click)="seleccionarLaborales()">Lun–Vie</button>
+            <button type="button" class="btn-dias-link" (click)="limpiarDias()">Limpiar</button>
+          </div>
+          <div class="dias-grid">
+            <div *ngFor="let d of dias" class="dia-chip"
+              [class.selected]="diasSeleccionados.has(d.val)"
+              (click)="toggleDia(d.val)">
+              {{ d.nombre.slice(0,3) }}
+            </div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>Desde *</label>
+            <input type="time" formControlName="horaInicio"/>
+          </div>
+          <div class="field">
+            <label>Hasta *</label>
+            <input type="time" formControlName="horaFin"/>
+          </div>
+        </div>
+
+        <div class="form-inline-actions">
+          <button class="btn-secondary-sm" (click)="mostrarFormHorario = false">Cancelar</button>
+          <button class="btn-primary-sm" (click)="agregarHorario()" [disabled]="saving">
+            {{ saving ? 'Guardando...' : 'Guardar (' + diasSeleccionados.size + ' días)' }}
+          </button>
+        </div>
+      </div>
+
+      <button class="btn-agregar" *ngIf="!mostrarFormHorario"
+        (click)="mostrarFormHorario = true">
+        + Agregar horario
+      </button>
+
+      <div class="alert-error" *ngIf="error">{{ error }}</div>
+
+      <div class="paso-footer">
+        <button class="btn-volver" (click)="paso = 2">← Volver</button>
+        <button class="btn-finalizar" (click)="finalizar()">
+          Ir al dashboard →
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

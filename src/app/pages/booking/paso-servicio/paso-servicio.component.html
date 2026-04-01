@@ -1,0 +1,24 @@
+<div class="paso">
+  <h2>¿Qué servicio necesitás?</h2>
+  <p class="paso-sub">Elegí el servicio que querés reservar</p>
+
+  <div class="loading" *ngIf="loading">Cargando servicios...</div>
+
+  <div class="cards-grid" *ngIf="!loading">
+    <div
+      *ngFor="let s of servicios"
+      class="service-card"
+      [class.selected]="state.servicio?.id === s.id"
+      (click)="seleccionar(s)"
+    >
+      <div class="service-icon">✂</div>
+      <div class="service-info">
+        <p class="service-nombre">{{ s.nombre }}</p>
+        <p class="service-meta">{{ s.duracionMinutos }} min
+          <span *ngIf="s.precio"> · ${{ s.precio | number:'1.0-0' }}</span>
+        </p>
+      </div>
+      <div class="service-check" *ngIf="state.servicio?.id === s.id">✓</div>
+    </div>
+  </div>
+</div>

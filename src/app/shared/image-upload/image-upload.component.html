@@ -1,0 +1,35 @@
+<div class="upload-container" [class.portada]="tipo === 'portada'">
+
+  <!-- Preview -->
+  <div class="preview" *ngIf="currentUrl && !uploading">
+    <img [src]="currentUrl" [alt]="label"/>
+    <div class="preview-overlay">
+      <label class="btn-cambiar">
+        Cambiar
+        <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden/>
+      </label>
+    </div>
+  </div>
+
+  <!-- Upload zone (sin imagen) -->
+  <label class="upload-zone" *ngIf="!currentUrl && !uploading">
+    <div class="upload-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/>
+        <line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+    </div>
+    <span class="upload-label">{{ label }}</span>
+    <span class="upload-hint">JPG, PNG hasta 5MB</span>
+    <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden/>
+  </label>
+
+  <!-- Loading -->
+  <div class="upload-loading" *ngIf="uploading">
+    <div class="spinner"></div>
+    <span>Subiendo...</span>
+  </div>
+
+  <span class="upload-error" *ngIf="error">{{ error }}</span>
+</div>

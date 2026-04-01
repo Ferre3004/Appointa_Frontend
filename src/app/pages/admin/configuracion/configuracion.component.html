@@ -1,0 +1,407 @@
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="images/logoappontheader.jpeg" alt="logosolo">
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-item" (click)="irDashboard()">
+        <span class="nav-icon">▦</span> Turnos
+      </a>
+      <a class="nav-item active">
+        <span class="nav-icon">⚙</span> Configuración
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn-logout" (click)="logout()">Salir</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="main-header">
+      <h1>Configuración</h1>
+      <p class="sub">Administrá los servicios, profesionales y horarios de tu negocio</p>
+    </div>
+
+    <!-- ── Banner onboarding ── -->
+    <div class="tutorial-card" *ngIf="esOnboarding">
+      <p class="tutorial-title">
+        ¡Bienvenido, {{ usuario?.nombre }}! Seguí estos pasos para configurar tu negocio
+      </p>
+
+      <div class="tutorial-pasos">
+
+        <!-- Paso 1 -->
+        <div
+          class="tutorial-paso"
+          [class.completado]="pasoServicioOk"
+          [class.activo]="pasoActual === 1"
+          (click)="irAPaso(1)"
+          title="Ir a Servicios"
+        >
+          <div class="tutorial-numero">
+            <span *ngIf="!pasoServicioOk">1</span>
+            <span *ngIf="pasoServicioOk" class="check-icon">✓</span>
+          </div>
+          <div class="tutorial-info">
+            <p class="tutorial-paso-titulo">Creá tus servicios</p>
+            <p class="tutorial-paso-desc">Definí qué servicios ofrecés, la duración y el precio de cada uno.</p>
+          </div>
+        </div>
+
+        <div class="tutorial-flecha">→</div>
+
+        <!-- Paso 2 -->
+        <div
+          class="tutorial-paso"
+          [class.completado]="pasoProfesionalOk"
+          [class.activo]="pasoActual === 2"
+          (click)="irAPaso(2)"
+          title="Ir a Profesionales"
+        >
+          <div class="tutorial-numero">
+            <span *ngIf="!pasoProfesionalOk">2</span>
+            <span *ngIf="pasoProfesionalOk" class="check-icon">✓</span>
+          </div>
+          <div class="tutorial-info">
+            <p class="tutorial-paso-titulo">Agregá profesionales</p>
+            <p class="tutorial-paso-desc">Cargá las personas que van a atender los turnos.</p>
+          </div>
+        </div>
+
+        <div class="tutorial-flecha">→</div>
+
+        <!-- Paso 3 -->
+        <div
+          class="tutorial-paso"
+          [class.completado]="pasoHorarioOk"
+          [class.activo]="pasoActual === 3"
+          (click)="irAPaso(3)"
+          title="Ir a Horarios"
+        >
+          <div class="tutorial-numero">
+            <span *ngIf="!pasoHorarioOk">3</span>
+            <span *ngIf="pasoHorarioOk" class="check-icon">✓</span>
+          </div>
+          <div class="tutorial-info">
+            <p class="tutorial-paso-titulo">Asigná horarios</p>
+            <p class="tutorial-paso-desc">Configurá los días y horarios disponibles para cada profesional.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tutorial-footer">
+        <span class="tutorial-hint" *ngIf="!onboardingCompleto">
+          Una vez listo, compartí tu link de reservas con tus clientes.
+        </span>
+        <span class="tutorial-hint completado-hint" *ngIf="onboardingCompleto">
+          🎉 ¡Todo listo! Tu negocio ya puede recibir turnos.
+        </span>
+        <button
+          class="banner-btn"
+          [class.disabled]="!onboardingCompleto"
+          [disabled]="!onboardingCompleto"
+          (click)="irDashboard()"
+          [title]="!onboardingCompleto ? 'Completá los 3 pasos primero' : 'Ir al dashboard'"
+        >
+          Ir al dashboard →
+        </button>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button [class.active]="tab === 'negocio'"       (click)="tab = 'negocio'">Mi negocio</button>
+      <button [class.active]="tab === 'servicios'"     (click)="tab = 'servicios'">Servicios</button>
+      <button [class.active]="tab === 'profesionales'" (click)="tab = 'profesionales'">Profesionales</button>
+      <button [class.active]="tab === 'horarios'"      (click)="tab = 'horarios'">Horarios</button>
+    </div>
+
+    <!-- ── Mi negocio ── -->
+    <div *ngIf="tab === 'negocio'">
+      <form [formGroup]="formNegocio" (ngSubmit)="guardarNegocio()">
+
+        <div class="negocio-preview" *ngIf="negocio?.fotoPortada">
+          <img [src]="negocio.fotoPortada" alt="Portada"/>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>Nombre del negocio *</label>
+            <input type="text" formControlName="nombre"/>
+          </div>
+          <div class="field">
+            <label>Teléfono</label>
+            <input type="tel" formControlName="telefono"/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Descripción</label>
+          <textarea formControlName="descripcion" rows="3"
+            placeholder="Contá brevemente de qué trata tu negocio..."></textarea>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>Dirección</label>
+            <input type="text" formControlName="direccion" placeholder="Av. Colón 123, Córdoba"/>
+          </div>
+          <div class="field">
+            <label>Instagram</label>
+            <input type="text" formControlName="instagram" placeholder="@mipeluqueria"/>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>Logo del negocio</label>
+            <app-image-upload
+              label="Subir logo"
+              tipo="logo"
+              [currentUrl]="formNegocio.get('logoUrl')?.value"
+              (uploaded)="formNegocio.get('logoUrl')?.setValue($event)">
+            </app-image-upload>
+          </div>
+          <div class="field">
+            <label>Foto de portada</label>
+            <app-image-upload
+              label="Subir portada"
+              tipo="portada"
+              [currentUrl]="formNegocio.get('fotoPortada')?.value"
+              (uploaded)="formNegocio.get('fotoPortada')?.setValue($event)">
+            </app-image-upload>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Color de marca</label>
+          <div class="colores-grid-config">
+            <div *ngFor="let c of colores" class="color-dot-config"
+              [style.background]="c.hex"
+              [class.selected]="formNegocio.get('colorPrimario')?.value === c.hex"
+              (click)="formNegocio.get('colorPrimario')?.setValue(c.hex)"
+              [title]="c.nombre">
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>URL pública de reservas</label>
+          <div class="slug-display">
+            <span>appointa.com/r/{{ negocio?.slug }}</span>
+            <button type="button" class="btn-copy" (click)="copiarLink()">Copiar link</button>
+          </div>
+        </div>
+
+        <div class="alert-error"   *ngIf="error">{{ error }}</div>
+        <div class="alert-success" *ngIf="guardadoOk">Cambios guardados correctamente</div>
+
+        <button type="submit" class="btn-add" [disabled]="saving">
+          {{ saving ? 'Guardando...' : 'Guardar cambios' }}
+        </button>
+
+      </form>
+    </div>
+
+    <!-- ── Servicios ── -->
+    <div *ngIf="tab === 'servicios'">
+      <div class="section-header">
+        <p>{{ servicios.length }} servicio{{ servicios.length !== 1 ? 's' : '' }}</p>
+        <button class="btn-add" (click)="abrirNuevoServicio()">+ Agregar servicio</button>
+      </div>
+      <div class="empty" *ngIf="servicios.length === 0">
+        Todavía no hay servicios. Agregá el primero.
+      </div>
+      <div class="cards-list">
+        <div class="item-card" *ngFor="let s of servicios" [class.inactivo]="!s.activo">
+          <div class="item-info">
+            <p class="item-nombre">{{ s.nombre }}</p>
+            <p class="item-meta">{{ s.duracionMinutos }} min
+              <span *ngIf="s.precio"> · ${{ s.precio | number:'1.0-0' }}</span>
+            </p>
+          </div>
+          <div class="item-actions">
+            <button class="btn-icon" (click)="abrirEditarServicio(s)" title="Editar">✏</button>
+            <button class="btn-icon" [class.danger]="s.activo" (click)="toggleServicio(s)"
+              [title]="s.activo ? 'Desactivar' : 'Activar'">
+              {{ s.activo ? '✕' : '✓' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Profesionales ── -->
+    <div *ngIf="tab === 'profesionales'">
+      <div class="section-header">
+        <p>{{ profesionales.length }} profesional{{ profesionales.length !== 1 ? 'es' : '' }}</p>
+        <button class="btn-add" (click)="abrirNuevoProfesional()">+ Agregar profesional</button>
+      </div>
+      <div class="empty" *ngIf="profesionales.length === 0">
+        Todavía no hay profesionales. Agregá el primero.
+      </div>
+      <div class="cards-list">
+        <div class="item-card" *ngFor="let p of profesionales" [class.inactivo]="!p.activo">
+          <div class="prof-avatar">{{ p.nombre.charAt(0) }}</div>
+          <div class="item-info">
+            <p class="item-nombre">{{ p.nombre }}</p>
+            <p class="item-meta" *ngIf="p.descripcion">{{ p.descripcion }}</p>
+          </div>
+          <div class="item-actions">
+            <button class="btn-icon" (click)="abrirEditarProfesional(p)" title="Editar">✏</button>
+            <button class="btn-icon" [class.danger]="p.activo" (click)="toggleProfesional(p)"
+              [title]="p.activo ? 'Desactivar' : 'Activar'">
+              {{ p.activo ? '✕' : '✓' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Horarios ── -->
+    <div *ngIf="tab === 'horarios'">
+      <div class="section-header">
+        <p>Disponibilidad semanal</p>
+        <button class="btn-add" (click)="abrirNuevoHorario()">+ Agregar horario</button>
+      </div>
+      <div class="empty" *ngIf="disponibilidad.length === 0">
+        Todavía no hay horarios configurados.
+      </div>
+      <div class="prof-horarios-group" *ngFor="let p of profesionales">
+        <ng-container *ngIf="getHorariosPorProfesional(p.id).length > 0">
+          <div class="prof-group-header">
+            <div class="prof-avatar-sm">{{ p.nombre.charAt(0) }}</div>
+            <span>{{ p.nombre }}</span>
+            <span class="prof-group-count">
+              {{ getHorariosPorProfesional(p.id).length }} día{{ getHorariosPorProfesional(p.id).length !== 1 ? 's' : '' }}
+            </span>
+          </div>
+          <div class="dias-chips-row">
+            <div class="dia-horario-chip" *ngFor="let d of getHorariosPorProfesional(p.id)">
+              <span class="dia-nombre">{{ d.diaNombre }}</span>
+              <span class="dia-horas">{{ d.horaInicio }} – {{ d.horaFin }}</span>
+              <button class="chip-delete" (click)="eliminarHorario(d.id)" title="Eliminar">✕</button>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ── Modal Servicio ── -->
+<div class="modal-overlay" *ngIf="modalServicio" (click)="modalServicio = false">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>{{ editandoId ? 'Editar servicio' : 'Nuevo servicio' }}</h3>
+    <form [formGroup]="formServicio" (ngSubmit)="guardarServicio()">
+      <div class="field">
+        <label>Nombre *</label>
+        <input type="text" formControlName="nombre" placeholder="Ej: Corte de pelo"/>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Duración (minutos) *</label>
+          <input type="number" formControlName="duracionMinutos" min="5" step="5"/>
+        </div>
+        <div class="field">
+          <label>Precio (opcional)</label>
+          <input type="number" formControlName="precio" placeholder="0"/>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" (click)="modalServicio = false">Cancelar</button>
+        <button type="submit" class="btn-save" [disabled]="saving">
+          {{ saving ? 'Guardando...' : 'Guardar' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ── Modal Profesional ── -->
+<div class="modal-overlay" *ngIf="modalProfesional" (click)="modalProfesional = false">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>{{ editandoId ? 'Editar profesional' : 'Nuevo profesional' }}</h3>
+    <form [formGroup]="formProfesional" (ngSubmit)="guardarProfesional()">
+      <div class="field">
+        <label>Nombre *</label>
+        <input type="text" formControlName="nombre" placeholder="Ej: María García"/>
+      </div>
+      <div class="field">
+        <label>Descripción (opcional)</label>
+        <input type="text" formControlName="descripcion" placeholder="Ej: Especialista en color"/>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" (click)="modalProfesional = false">Cancelar</button>
+        <button type="submit" class="btn-save" [disabled]="saving">
+          {{ saving ? 'Guardando...' : 'Guardar' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ── Modal Horario ── -->
+<div class="modal-overlay" *ngIf="modalHorario" (click)="modalHorario = false">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>Nuevo horario</h3>
+    <form [formGroup]="formHorario" (ngSubmit)="guardarHorario()">
+
+      <div class="field">
+        <label>Profesional *</label>
+        <select formControlName="profesionalId">
+          <option value="">Seleccioná un profesional</option>
+          <option *ngFor="let p of profesionales" [value]="p.id">{{ p.nombre }}</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Días *</label>
+        <div class="dias-acciones">
+          <button type="button" class="btn-dias-link" (click)="seleccionarLaborales()">Lun–Vie</button>
+          <button type="button" class="btn-dias-link" (click)="limpiarDias()">Limpiar</button>
+        </div>
+        <div class="dias-grid">
+          <div
+            *ngFor="let d of dias"
+            class="dia-chip"
+            [class.selected]="diasSeleccionados.has(d.val)"
+            [class.ocupado]="diaYaOcupado(d.val)"
+            (click)="!diaYaOcupado(d.val) && toggleDia(d.val)"
+          >
+            {{ d.nombre.slice(0, 3) }}
+          </div>
+        </div>
+        <span class="field-error" *ngIf="error && diasSeleccionados.size === 0">
+          Seleccioná al menos un día
+        </span>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Desde *</label>
+          <input type="time" formControlName="horaInicio"/>
+        </div>
+        <div class="field">
+          <label>Hasta *</label>
+          <input type="time" formControlName="horaFin"/>
+        </div>
+      </div>
+
+      <div class="alert-error" *ngIf="error">{{ error }}</div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" (click)="modalHorario = false">Cancelar</button>
+        <button type="submit" class="btn-save" [disabled]="saving">
+          {{ saving ? 'Guardando...' : 'Guardar' + (diasSeleccionados.size > 0 ? ' (' + diasSeleccionados.size + ' días)' : '') }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

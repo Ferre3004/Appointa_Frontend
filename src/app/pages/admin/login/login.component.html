@@ -1,0 +1,58 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="login-header">
+        <img src="images/logoappontheader.jpeg" alt="logoHeader">
+      <p>Ingresá a tu panel</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="field">
+        <label>Email</label>
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="admin@demo.com"
+          [class.error]="
+            form.get('email')?.invalid && form.get('email')?.touched
+          "
+        />
+        <span
+          class="field-error"
+          *ngIf="form.get('email')?.invalid && form.get('email')?.touched"
+        >
+          Ingresá un email válido
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Contraseña</label>
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+          [class.error]="
+            form.get('password')?.invalid && form.get('password')?.touched
+          "
+        />
+        <span
+          class="field-error"
+          *ngIf="form.get('password')?.invalid && form.get('password')?.touched"
+        >
+          Ingresá tu contraseña
+        </span>
+      </div>
+
+      <div class="alert-error" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <button type="submit" [disabled]="loading" class="btn-primary">
+        <span *ngIf="!loading">Ingresar</span>
+        <span *ngIf="loading">Ingresando...</span>
+      </button>
+      <p class="register-link">
+        ¿No tenés cuenta? <a routerLink="/registro">Registrá tu negocio</a>
+      </p>
+    </form>
+  </div>
+</div>

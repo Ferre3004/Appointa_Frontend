@@ -1,0 +1,188 @@
+<!-- ── Nav ── -->
+<header class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">
+  <img src="images/logoFondoTransparente.png" alt="Appointa" class="nav-logo-img" />
+</div>
+    <div class="nav-links">
+      <a href="#features" class="nav-link">Funciones</a>
+      <a href="#pricing"  class="nav-link">Precios</a>
+      <a [routerLink]="['/admin/login']" class="nav-link">Ingresar</a>
+      <a [routerLink]="['/registro']" class="btn-nav-cta">Empezar gratis</a>
+    </div>
+  </div>
+</header>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">✦ Sistema de turnos online</div>
+      <h1 class="hero-title">
+        Tu agenda,<br>
+        <span class="hero-accent">siempre disponible</span>
+      </h1>
+      <p class="hero-sub">
+        Permitile a tus clientes reservar turnos online en cualquier momento.
+        Sin llamadas, sin confusiones. Solo más tiempo para vos.
+      </p>
+      <div class="hero-actions">
+        <a [routerLink]="['/registro']" class="btn-primary">
+          Empezar gratis — es fácil
+        </a>
+        <a href="#how" class="btn-ghost">Ver cómo funciona ↓</a>
+      </div>
+      <p class="hero-hint">Sin tarjeta de crédito. Configuración en minutos.</p>
+    </div>
+
+    <!-- Mock booking card -->
+    <div class="hero-mock">
+      <div class="mock-card">
+        <div class="mock-header">
+          <div class="mock-avatar">A</div>
+          <div>
+            <p class="mock-business">Peluquería Ana</p>
+            <p class="mock-slug">appointa.com/r/peluqueria-ana</p>
+          </div>
+        </div>
+        <div class="mock-step-label">Seleccioná un servicio</div>
+        <div class="mock-services">
+          <div class="mock-service selected">
+            <span>✂ Corte de pelo</span>
+            <span class="mock-detail">45 min · $3.500</span>
+          </div>
+          <div class="mock-service">
+            <span>💈 Corte + Barba</span>
+            <span class="mock-detail">60 min · $5.000</span>
+          </div>
+          <div class="mock-service">
+            <span>🎨 Coloración</span>
+            <span class="mock-detail">90 min · $8.000</span>
+          </div>
+        </div>
+        <div class="mock-step-label" style="margin-top: 12px">Elegí un horario</div>
+        <div class="mock-slots">
+          <div class="mock-slot">09:00</div>
+          <div class="mock-slot selected">10:30</div>
+          <div class="mock-slot">12:00</div>
+          <div class="mock-slot disabled">14:00</div>
+          <div class="mock-slot">15:30</div>
+          <div class="mock-slot">17:00</div>
+        </div>
+        <div class="mock-btn">Confirmar turno →</div>
+      </div>
+      <div class="mock-glow"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Rubros ── -->
+<section class="rubros-section">
+  <p class="rubros-label">Usado por negocios de todos los rubros</p>
+  <div class="rubros-track">
+    <div class="rubros-inner">
+      <span class="rubro-tag" *ngFor="let r of rubros">{{ r }}</span>
+      <!-- duplicado para el loop infinito -->
+      <span class="rubro-tag" *ngFor="let r of rubros">{{ r }}</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── Features ── -->
+<section class="features-section" id="features">
+  <div class="section-inner">
+    <div class="section-tag">Funcionalidades</div>
+    <h2 class="section-title">Todo lo que necesitás,<br>nada de lo que no</h2>
+    <p class="section-sub">
+      Diseñado para negocios de servicios que quieren profesionalizarse
+      sin complicarse con herramientas difíciles.
+    </p>
+    <div class="features-grid">
+      <div class="feature-card" *ngFor="let f of features">
+        <div class="feature-icon">{{ f.icon }}</div>
+        <h3 class="feature-title">{{ f.titulo }}</h3>
+        <p class="feature-desc">{{ f.desc }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Cómo funciona ── -->
+<section class="how-section" id="how">
+  <div class="section-inner">
+    <div class="section-tag">Proceso</div>
+    <h2 class="section-title">Tres pasos y ya estás</h2>
+    <div class="pasos-row">
+      <div class="paso-item" *ngFor="let p of pasos; let i = index">
+        <div class="paso-numero">{{ p.numero }}</div>
+        <h3 class="paso-titulo">{{ p.titulo }}</h3>
+        <p class="paso-desc">{{ p.desc }}</p>
+        <div class="paso-connector" *ngIf="i < pasos.length - 1"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Pricing ── -->
+<section class="pricing-section" id="pricing">
+  <div class="section-inner">
+    <div class="section-tag">Precios</div>
+    <h2 class="section-title">Simple y transparente</h2>
+    <p class="section-sub">Próximamente. Mientras tanto, usá la plataforma gratis.</p>
+    <div class="planes-grid">
+      <div
+        class="plan-card"
+        *ngFor="let plan of planes"
+        [class.destacado]="plan.destacado"
+      >
+        <div class="plan-badge" *ngIf="plan.destacado">Más popular</div>
+        <p class="plan-nombre">{{ plan.nombre }}</p>
+        <div class="plan-precio">
+          <span class="plan-monto">{{ plan.precio }}</span>
+          <span class="plan-periodo">{{ plan.periodo }}</span>
+        </div>
+        <ul class="plan-features">
+          <li *ngFor="let feat of plan.features">
+            <span class="plan-check">✓</span> {{ feat }}
+          </li>
+        </ul>
+        <a
+          [routerLink]="plan.nombre === 'Business' ? [] : ['/registro']"
+          class="plan-cta"
+          [class.plan-cta-primary]="plan.destacado"
+        >
+          {{ plan.cta }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA final ── -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-glow"></div>
+    <h2 class="cta-title">¿Listo para llenar tu agenda?</h2>
+    <p class="cta-sub">
+      Registrate hoy y empezá a recibir turnos online en menos de 10 minutos.
+    </p>
+    <a [routerLink]="['/registro']" class="btn-primary btn-large">
+      Crear mi cuenta gratis →
+    </a>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer class="footer">
+  <div class="footer-inner">
+   <div class="footer-logo">
+  <img src="images/logoFondoTransparente.png" alt="Appointa" class="footer-logo-img" />
+</div>
+    <p class="footer-copy">© 2025 Appointa. Hecho en Córdoba, Argentina 🇦🇷</p>
+    <div class="footer-links">
+      <a [routerLink]="['/admin/login']">Ingresar</a>
+      <a [routerLink]="['/registro']">Registrarse</a>
+    </div>
+  </div>
+</footer>

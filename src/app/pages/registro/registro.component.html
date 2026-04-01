@@ -1,0 +1,164 @@
+<div class="registro-wrapper">
+  <div class="registro-card">
+
+    <!-- Header -->
+    <div class="registro-header">
+      <img src="images/logosolodashboard.jpeg" alt="logoregistro">
+      <h1>Crear cuenta</h1>
+      <p>Empezá a recibir turnos online hoy</p>
+    </div>
+
+    <!-- Stepper -->
+    <div class="stepper">
+      <div class="step" [class.active]="paso === 1" [class.done]="paso > 1">
+        <div class="step-circle">{{ paso > 1 ? '✓' : '1' }}</div>
+        <span>Tu negocio</span>
+      </div>
+      <div class="step-line" [class.done]="paso > 1"></div>
+      <div class="step" [class.active]="paso === 2">
+        <div class="step-circle">2</div>
+        <span>Tu cuenta</span>
+      </div>
+    </div>
+
+    <!-- Paso 1 -->
+   <form *ngIf="paso === 1" [formGroup]="form1">
+
+  <div class="field">
+    <label>Nombre del negocio *</label>
+    <input type="text" formControlName="nombreNegocio"
+      placeholder="Ej: Peluquería Ana"
+      [class.error]="isInvalid(form1, 'nombreNegocio')"/>
+    <span class="field-error" *ngIf="isInvalid(form1, 'nombreNegocio')">
+      Ingresá el nombre del negocio
+    </span>
+  </div>
+
+  <div class="field">
+    <label>URL de reservas *</label>
+    <div class="slug-input">
+      <span class="slug-prefix">appointa.com/r/</span>
+      <input type="text" formControlName="slug"
+        placeholder="mi-peluqueria"
+        [class.error]="isInvalid(form1, 'slug')"/>
+    </div>
+    <span class="field-error" *ngIf="isInvalid(form1, 'slug')">
+      Solo letras minúsculas, números y guiones
+    </span>
+    <span class="field-hint" *ngIf="!isInvalid(form1, 'slug')">
+      {{ slugPreview }}
+    </span>
+  </div>
+
+  <div class="field-row">
+    <div class="field">
+      <label>Rubro *</label>
+      <select formControlName="rubro" [class.error]="isInvalid(form1, 'rubro')">
+        <option value="">Seleccioná</option>
+        <option *ngFor="let r of rubros" [value]="r">{{ r }}</option>
+      </select>
+      <span class="field-error" *ngIf="isInvalid(form1, 'rubro')">
+        Seleccioná un rubro
+      </span>
+    </div>
+    <div class="field">
+      <label>Teléfono *</label>
+      <input type="tel" formControlName="telefono"
+        placeholder="+54 351 1234567"
+        [class.error]="isInvalid(form1, 'telefono')"/>
+      <span class="field-error" *ngIf="isInvalid(form1, 'telefono')">
+        Ingresá el teléfono
+      </span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Descripción <span class="opcional">(opcional)</span></label>
+    <textarea formControlName="descripcion"
+      placeholder="Contá brevemente de qué trata tu negocio..."
+      rows="3"></textarea>
+  </div>
+
+  <div class="field-row">
+    <div class="field">
+      <label>Dirección <span class="opcional">(opcional)</span></label>
+      <input type="text" formControlName="direccion"
+        placeholder="Av. Colón 123, Córdoba"/>
+    </div>
+    <div class="field">
+      <label>Instagram <span class="opcional">(opcional)</span></label>
+      <input type="text" formControlName="instagram"
+        placeholder="@mipeluqueria"/>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Color de marca</label>
+    <div class="colores-grid">
+      <div *ngFor="let c of colores" class="color-dot"
+        [style.background]="c.hex"
+        [class.selected]="form1.get('colorPrimario')?.value === c.hex"
+        (click)="seleccionarColor(c.hex)"
+        [title]="c.nombre">
+      </div>
+    </div>
+  </div>
+
+  <button type="button" class="btn-primary" (click)="siguientePaso()">
+    Continuar →
+  </button>
+
+  <p class="login-link">
+    ¿Ya tenés cuenta? <a routerLink="/admin/login">Ingresá acá</a>
+  </p>
+
+</form>
+
+    <!-- Paso 2 -->
+    <form *ngIf="paso === 2" [formGroup]="form2" (ngSubmit)="registrar()">
+
+      <div class="field">
+        <label>Tu nombre *</label>
+        <input type="text" formControlName="adminNombre"
+          placeholder="Juan García"
+          [class.error]="isInvalid(form2, 'adminNombre')"/>
+        <span class="field-error" *ngIf="isInvalid(form2, 'adminNombre')">
+          Ingresá tu nombre
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Email *</label>
+        <input type="email" formControlName="adminEmail"
+          placeholder="juan@mipeluqueria.com"
+          [class.error]="isInvalid(form2, 'adminEmail')"/>
+        <span class="field-error" *ngIf="isInvalid(form2, 'adminEmail')">
+          Ingresá un email válido
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Contraseña *</label>
+        <input type="password" formControlName="adminPassword"
+          placeholder="Mínimo 6 caracteres"
+          [class.error]="isInvalid(form2, 'adminPassword')"/>
+        <span class="field-error" *ngIf="isInvalid(form2, 'adminPassword')">
+          Mínimo 6 caracteres
+        </span>
+      </div>
+
+      <div class="alert-error" *ngIf="error">{{ error }}</div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-volver" (click)="volverPaso()">
+          ← Volver
+        </button>
+        <button type="submit" class="btn-primary" [disabled]="loading">
+          {{ loading ? 'Creando cuenta...' : 'Crear cuenta' }}
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

@@ -1,0 +1,35 @@
+.exitosa {
+  text-align: center;
+  padding: 48px 20px;
+}
+
+.check-circle {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: #d1fae5;
+  color: #059669;
+  font-size: 32px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+}
+
+h2 { font-size: 22px; font-weight: 600; color: #1a1a1a; margin: 0 0 10px; }
+p  { font-size: 15px; color: #888; margin: 0 0 32px; }
+
+.btn-nueva {
+  height: 44px; padding: 0 28px;
+  background: var(--color-brand); color: #fff;
+  border: none; border-radius: 8px;
+  font-size: 15px; font-weight: 500;
+  cursor: pointer; transition: opacity 0.2s;
+  &:hover { opacity: 0.9; }
+}
+
+//responsive
+@media (max-width: 600px) {
+  .exitosa { padding: 32px 16px; }
+  h2 { font-size: 19px; }
+}

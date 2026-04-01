@@ -1,0 +1,68 @@
+.paso {
+  h2 { font-size: 20px; font-weight: 600; color: #1a1a1a; margin: 0 0 6px; }
+  .paso-sub { font-size: 14px; color: #888; margin: 0 0 24px; }
+}
+
+.fecha-picker {
+  margin-bottom: 24px;
+
+  label { display: block; font-size: 13px; font-weight: 500; color: #444; margin-bottom: 6px; }
+
+  input {
+    height: 42px; padding: 0 12px;
+    border: 1px solid #ddd; border-radius: 8px;
+    font-size: 14px; cursor: pointer;
+    &:focus { outline: none; border-color: var(--color-brand); }
+  }
+}
+
+.loading, .no-slots {
+  color: #888; font-size: 14px; padding: 16px 0;
+}
+
+.slots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.slot {
+  padding: 12px 8px;
+  text-align: center;
+  background: #fff;
+  border: 2px solid #eee;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #333;
+
+  &:hover   { border-color: var(--color-brand); color: var(--color-brand); }
+  &.selected {
+    border-color: var(--color-brand);
+    background: var(--color-brand);
+    color: #fff;
+  }
+}
+
+.btn-volver {
+  background: none; border: none; color: #888;
+  font-size: 14px; cursor: pointer; padding: 0;
+  &:hover { color: var(--color-brand); }
+}
+
+//responsive
+@media (max-width: 600px) {
+  .paso h2 { font-size: 17px; }
+
+  .fecha-picker input { width: 100%; }
+
+  .slots-grid {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 8px;
+  }
+
+  .slot { padding: 10px 6px; font-size: 13px; }
+}

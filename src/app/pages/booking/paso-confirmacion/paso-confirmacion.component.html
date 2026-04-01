@@ -1,0 +1,62 @@
+<div class="paso">
+  <h2>Confirmá tu turno</h2>
+  <p class="paso-sub">Revisá los detalles y completá tus datos</p>
+
+  <!-- Resumen -->
+  <div class="resumen">
+    <div class="resumen-row">
+      <span class="resumen-label">Servicio</span>
+      <span class="resumen-valor">{{ state.servicio?.nombre }}</span>
+    </div>
+    <div class="resumen-row">
+      <span class="resumen-label">Profesional</span>
+      <span class="resumen-valor">{{ state.profesional?.nombre }}</span>
+    </div>
+    <div class="resumen-row">
+      <span class="resumen-label">Fecha y hora</span>
+      <span class="resumen-valor">{{ formatFechaHora(state.slot?.fechaHora) }}</span>
+    </div>
+    <div class="resumen-row" *ngIf="state.servicio?.precio">
+      <span class="resumen-label">Precio</span>
+      <span class="resumen-valor">${{ state.servicio?.precio | number:'1.0-0' }}</span>
+    </div>
+  </div>
+
+  <!-- Formulario -->
+  <form [formGroup]="form" (ngSubmit)="confirmar()">
+    <div class="field">
+      <label>Nombre completo *</label>
+      <input type="text" formControlName="nombre" placeholder="Juan Pérez"
+        [class.error]="form.get('nombre')?.invalid && form.get('nombre')?.touched"/>
+      <span class="field-error"
+        *ngIf="form.get('nombre')?.invalid && form.get('nombre')?.touched">
+        Ingresá tu nombre
+      </span>
+    </div>
+
+    <div class="field">
+      <label>Teléfono (WhatsApp) *</label>
+      <input type="tel" formControlName="telefono" placeholder="+54 351 1234567"
+        [class.error]="form.get('telefono')?.invalid && form.get('telefono')?.touched"/>
+      <span class="field-error"
+        *ngIf="form.get('telefono')?.invalid && form.get('telefono')?.touched">
+        Ingresá tu teléfono
+      </span>
+    </div>
+
+    <div class="field">
+      <label>Email <span class="opcional">(opcional)</span></label>
+      <input type="email" formControlName="email" placeholder="juan@email.com"
+        [class.error]="form.get('email')?.invalid && form.get('email')?.touched"/>
+    </div>
+
+    <div class="alert-error" *ngIf="error">{{ error }}</div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-volver" (click)="volver()">← Volver</button>
+      <button type="submit" class="btn-confirmar" [disabled]="loading">
+        {{ loading ? 'Confirmando...' : 'Confirmar turno' }}
+      </button>
+    </div>
+  </form>
+</div>

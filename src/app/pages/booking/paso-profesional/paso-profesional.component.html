@@ -1,0 +1,24 @@
+<div class="paso">
+  <h2>¿Con quién querés atenderte?</h2>
+  <p class="paso-sub">Elegí un profesional disponible</p>
+
+  <div class="loading" *ngIf="loading">Cargando profesionales...</div>
+
+  <div class="cards-grid" *ngIf="!loading">
+    <div
+      *ngFor="let p of profesionales"
+      class="prof-card"
+      [class.selected]="state.profesional?.id === p.id"
+      (click)="seleccionar(p)"
+    >
+      <div class="prof-avatar">{{ p.nombre.charAt(0) }}</div>
+      <div class="prof-info">
+        <p class="prof-nombre">{{ p.nombre }}</p>
+        <p class="prof-desc" *ngIf="p.descripcion">{{ p.descripcion }}</p>
+      </div>
+      <div class="service-check" *ngIf="state.profesional?.id === p.id">✓</div>
+    </div>
+  </div>
+
+  <button class="btn-volver" (click)="volver()">← Volver</button>
+</div>

@@ -1,0 +1,97 @@
+.paso {
+  h2 { font-size: 20px; font-weight: 600; color: #1a1a1a; margin: 0 0 6px; }
+  .paso-sub { font-size: 14px; color: #888; margin: 0 0 24px; }
+}
+
+.resumen {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.resumen-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #f5f5f5;
+  &:last-child { border-bottom: none; }
+}
+
+.resumen-label { font-size: 13px; color: #888; }
+.resumen-valor { font-size: 14px; font-weight: 500; color: #1a1a1a; text-align: right; }
+
+.field {
+  margin-bottom: 16px;
+
+  label {
+    display: block; font-size: 13px;
+    font-weight: 500; color: #444; margin-bottom: 6px;
+  }
+
+  .opcional { font-weight: 400; color: #aaa; }
+
+  input {
+    width: 100%; height: 42px; padding: 0 12px;
+    border: 1px solid #ddd; border-radius: 8px;
+    font-size: 14px; box-sizing: border-box;
+    transition: border-color 0.2s;
+    &:focus { outline: none; border-color: var(--color-brand); }
+    &.error { border-color: #e24b4a; }
+  }
+
+  .field-error { font-size: 12px; color: #e24b4a; margin-top: 4px; display: block; }
+}
+
+.alert-error {
+  background: #fef2f2; border: 1px solid #fecaca;
+  color: #b91c1c; border-radius: 8px;
+  padding: 10px 14px; font-size: 13px; margin-bottom: 16px;
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+}
+
+.btn-volver {
+  background: none; border: none; color: #888;
+  font-size: 14px; cursor: pointer; padding: 0;
+  &:hover { color: var(--color-brand); }
+}
+
+.btn-confirmar {
+  height: 44px; padding: 0 28px;
+  background: var(--color-brand); color: #fff;
+  border: none; border-radius: 8px;
+  font-size: 15px; font-weight: 500;
+  cursor: pointer; transition: opacity 0.2s;
+  &:hover:not(:disabled) { opacity: 0.9; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+//responsive
+
+@media (max-width: 600px) {
+  .paso h2 { font-size: 17px; }
+
+  .resumen-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .resumen-valor { text-align: left; }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .btn-confirmar { width: 100%; }
+  .btn-volver    { text-align: center; }
+}
