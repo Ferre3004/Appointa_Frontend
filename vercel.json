@@ -1,4 +1,6 @@
 {
+  "buildCommand": "ng build",
+  "outputDirectory": "dist/agendamiento-web/browser",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
