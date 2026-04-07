@@ -9,7 +9,7 @@
     </div>
 
     <!-- Stepper -->
-    <div class="stepper">
+    <div class="stepper" *ngIf="paso !== 3">
       <div class="step" [class.active]="paso === 1" [class.done]="paso > 1">
         <div class="step-circle">{{ paso > 1 ? '✓' : '1' }}</div>
         <span>Tu negocio</span>
