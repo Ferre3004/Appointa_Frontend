@@ -1,14 +1,14 @@
 <div class="registro-wrapper">
-  <div class="registro-card">
+  <div class="registro-card" [class.wide]="paso === 3">
 
-    <!-- Header -->
-    <div class="registro-header">
+    <!-- Header — se oculta en paso 3 -->
+    <div class="registro-header" *ngIf="paso !== 3">
       <img src="images/logoCompletoSinFondo.png" alt="logoregistro">
       <h1>Crear cuenta</h1>
       <p>Empezá a recibir turnos online hoy</p>
     </div>
 
-    <!-- Stepper -->
+    <!-- Stepper — se oculta en paso 3 -->
     <div class="stepper" *ngIf="paso !== 3">
       <div class="step" [class.active]="paso === 1" [class.done]="paso > 1">
         <div class="step-circle">{{ paso > 1 ? '✓' : '1' }}</div>
@@ -22,97 +22,97 @@
     </div>
 
     <!-- Paso 1 -->
-   <form *ngIf="paso === 1" [formGroup]="form1">
+    <form *ngIf="paso === 1" [formGroup]="form1">
 
-  <div class="field">
-    <label>Nombre del negocio *</label>
-    <input type="text" formControlName="nombreNegocio"
-      placeholder="Ej: Peluquería Ana"
-      [class.error]="isInvalid(form1, 'nombreNegocio')"/>
-    <span class="field-error" *ngIf="isInvalid(form1, 'nombreNegocio')">
-      Ingresá el nombre del negocio
-    </span>
-  </div>
-
-  <div class="field">
-    <label>URL de reservas *</label>
-    <div class="slug-input">
-      <span class="slug-prefix">appointa.com/r/</span>
-      <input type="text" formControlName="slug"
-        placeholder="mi-peluqueria"
-        [class.error]="isInvalid(form1, 'slug')"/>
-    </div>
-    <span class="field-error" *ngIf="isInvalid(form1, 'slug')">
-      Solo letras minúsculas, números y guiones
-    </span>
-    <span class="field-hint" *ngIf="!isInvalid(form1, 'slug')">
-      {{ slugPreview }}
-    </span>
-  </div>
-
-  <div class="field-row">
-    <div class="field">
-      <label>Rubro *</label>
-      <select formControlName="rubro" [class.error]="isInvalid(form1, 'rubro')">
-        <option value="">Seleccioná</option>
-        <option *ngFor="let r of rubros" [value]="r">{{ r }}</option>
-      </select>
-      <span class="field-error" *ngIf="isInvalid(form1, 'rubro')">
-        Seleccioná un rubro
-      </span>
-    </div>
-    <div class="field">
-      <label>Teléfono *</label>
-      <input type="tel" formControlName="telefono"
-        placeholder="+54 351 1234567"
-        [class.error]="isInvalid(form1, 'telefono')"/>
-      <span class="field-error" *ngIf="isInvalid(form1, 'telefono')">
-        Ingresá el teléfono
-      </span>
-    </div>
-  </div>
-
-  <div class="field">
-    <label>Descripción <span class="opcional">(opcional)</span></label>
-    <textarea formControlName="descripcion"
-      placeholder="Contá brevemente de qué trata tu negocio..."
-      rows="3"></textarea>
-  </div>
-
-  <div class="field-row">
-    <div class="field">
-      <label>Dirección <span class="opcional">(opcional)</span></label>
-      <input type="text" formControlName="direccion"
-        placeholder="Av. Colón 123, Córdoba"/>
-    </div>
-    <div class="field">
-      <label>Instagram <span class="opcional">(opcional)</span></label>
-      <input type="text" formControlName="instagram"
-        placeholder="@mipeluqueria"/>
-    </div>
-  </div>
-
-  <div class="field">
-    <label>Color de marca</label>
-    <div class="colores-grid">
-      <div *ngFor="let c of colores" class="color-dot"
-        [style.background]="c.hex"
-        [class.selected]="form1.get('colorPrimario')?.value === c.hex"
-        (click)="seleccionarColor(c.hex)"
-        [title]="c.nombre">
+      <div class="field">
+        <label>Nombre del negocio *</label>
+        <input type="text" formControlName="nombreNegocio"
+          placeholder="Ej: Peluquería Ana"
+          [class.error]="isInvalid(form1, 'nombreNegocio')"/>
+        <span class="field-error" *ngIf="isInvalid(form1, 'nombreNegocio')">
+          Ingresá el nombre del negocio
+        </span>
       </div>
-    </div>
-  </div>
 
-  <button type="button" class="btn-primary" (click)="siguientePaso()">
-    Continuar →
-  </button>
+      <div class="field">
+        <label>URL de reservas *</label>
+        <div class="slug-input">
+          <span class="slug-prefix">prenotare.pro/r/</span>
+          <input type="text" formControlName="slug"
+            placeholder="mi-peluqueria"
+            [class.error]="isInvalid(form1, 'slug')"/>
+        </div>
+        <span class="field-error" *ngIf="isInvalid(form1, 'slug')">
+          Solo letras minúsculas, números y guiones
+        </span>
+        <span class="field-hint" *ngIf="!isInvalid(form1, 'slug')">
+          {{ slugPreview }}
+        </span>
+      </div>
 
-  <p class="login-link">
-    ¿Ya tenés cuenta? <a routerLink="/admin/login">Ingresá acá</a>
-  </p>
+      <div class="field-row">
+        <div class="field">
+          <label>Rubro *</label>
+          <select formControlName="rubro" [class.error]="isInvalid(form1, 'rubro')">
+            <option value="">Seleccioná</option>
+            <option *ngFor="let r of rubros" [value]="r">{{ r }}</option>
+          </select>
+          <span class="field-error" *ngIf="isInvalid(form1, 'rubro')">
+            Seleccioná un rubro
+          </span>
+        </div>
+        <div class="field">
+          <label>Teléfono *</label>
+          <input type="tel" formControlName="telefono"
+            placeholder="+54 351 1234567"
+            [class.error]="isInvalid(form1, 'telefono')"/>
+          <span class="field-error" *ngIf="isInvalid(form1, 'telefono')">
+            Ingresá el teléfono
+          </span>
+        </div>
+      </div>
 
-</form>
+      <div class="field">
+        <label>Descripción <span class="opcional">(opcional)</span></label>
+        <textarea formControlName="descripcion"
+          placeholder="Contá brevemente de qué trata tu negocio..."
+          rows="3"></textarea>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Dirección <span class="opcional">(opcional)</span></label>
+          <input type="text" formControlName="direccion"
+            placeholder="Av. Colón 123, Córdoba"/>
+        </div>
+        <div class="field">
+          <label>Instagram <span class="opcional">(opcional)</span></label>
+          <input type="text" formControlName="instagram"
+            placeholder="@mipeluqueria"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Color de marca</label>
+        <div class="colores-grid">
+          <div *ngFor="let c of colores" class="color-dot"
+            [style.background]="c.hex"
+            [class.selected]="form1.get('colorPrimario')?.value === c.hex"
+            (click)="seleccionarColor(c.hex)"
+            [title]="c.nombre">
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn-primary" (click)="siguientePaso()">
+        Continuar →
+      </button>
+
+      <p class="login-link">
+        ¿Ya tenés cuenta? <a routerLink="/admin/login">Ingresá acá</a>
+      </p>
+
+    </form>
 
     <!-- Paso 2 -->
     <form *ngIf="paso === 2" [formGroup]="form2" (ngSubmit)="registrar()">
@@ -159,11 +159,16 @@
       </div>
 
     </form>
-<!-- ── Paso 3: Elegir plan ── -->
+
+    <!-- Paso 3: Elegir plan -->
     <div *ngIf="paso === 3" class="paso-planes">
-      <h3 class="planes-titulo">Elegí tu plan</h3>
-      <p class="planes-sub">Cancelá cuando quieras. Sin permanencia.</p>
- 
+
+      <div class="paso3-header">
+        <img src="images/logoCompletoSinFondo.png" alt="Prenotare" class="logo-paso3"/>
+        <h3 class="planes-titulo">Elegí tu plan</h3>
+        <p class="planes-sub">Cancelá cuando quieras. Sin permanencia.</p>
+      </div>
+
       <div class="planes-grid">
         <div
           class="plan-card"
@@ -193,12 +198,14 @@
           </button>
         </div>
       </div>
-   <div class="alert-error" *ngIf="error">{{ error }}</div>
- 
+
+      <div class="alert-error" *ngIf="error">{{ error }}</div>
+
       <button class="btn-saltar" (click)="saltarPago()">
         Saltar por ahora →
       </button>
-       </div>
-       
+
+    </div>
+
   </div>
 </div>

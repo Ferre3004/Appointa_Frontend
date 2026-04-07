@@ -8,28 +8,30 @@
 }
 
 .registro-card {
-   background: #fff;
+  background: #fff;
   border-radius: 12px;
   padding: 40px;
   width: 100%;
   max-width: 460px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-  transition: max-width 0.3s ease;  // ← agregar transición suave
+  transition: max-width 0.3s ease;
 
   &.wide {
-    max-width: 860px;
+    max-width: 900px;
+    padding: 40px;
   }
 }
 
 .registro-header {
   text-align: center;
   margin-bottom: 28px;
-img {
-    max-width: 150px;      
-    height: auto;          
-    display: block;         
+
+  img {
+    max-width: 150px;
+    height: auto;
+    display: block;
     margin: 0 auto 10px;
-    border-radius: 10px;   
+    border-radius: 10px;
   }
 
   h1 { font-size: 20px; font-weight: 600; margin: 0 0 4px; color: #1a1a1a; }
@@ -95,6 +97,12 @@ img {
 
   .field-error { font-size: 12px; color: #e24b4a; margin-top: 4px; display: block; }
   .field-hint  { font-size: 12px; color: #888; margin-top: 4px; display: block; }
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
 // Slug input
@@ -204,60 +212,74 @@ textarea {
   &:focus { outline: none; border-color: #534AB7; }
 }
 
-.registro-card.wide {
-  max-width: 860px;
+.opcional {
+  color: #aaa;
+  font-weight: 400;
 }
- 
+
 // ── Paso 3: Planes ────────────────────────────────────────────────────────────
 .paso-planes {
   text-align: center;
 }
- 
+
+.paso3-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.logo-paso3 {
+  max-width: 120px;
+  height: auto;
+  display: block;
+  margin: 0 auto 16px;
+}
+
 .planes-titulo {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: #1a1a1a;
   margin: 0 0 6px;
 }
- 
+
 .planes-sub {
   font-size: 13px;
   color: #888;
-  margin: 0 0 24px;
+  margin: 0;
 }
- 
+
 .planes-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
+  gap: 16px;
   text-align: left;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
- 
+
 .plan-card {
   border: 1px solid #e5e7eb;
   border-radius: 12px;
-  padding: 20px;
+  padding: 24px 20px;
   position: relative;
   transition: transform 0.2s, box-shadow 0.2s;
   background: #fff;
- 
+  min-width: 0; // evita overflow en grid
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(83, 74, 183, 0.1);
   }
- 
+
   &.destacado {
     border-color: #534AB7;
     box-shadow: 0 4px 16px rgba(83, 74, 183, 0.15);
   }
- 
+
   &.seleccionado {
     border-color: #534AB7;
     background: #f5f3ff;
   }
 }
- 
+
 .plan-badge {
   position: absolute;
   top: -11px;
@@ -271,7 +293,7 @@ textarea {
   border-radius: 20px;
   white-space: nowrap;
 }
- 
+
 .plan-nombre {
   font-size: 12px;
   font-weight: 700;
@@ -280,59 +302,62 @@ textarea {
   color: #534AB7;
   margin: 0 0 2px;
 }
- 
+
 .plan-desc {
   font-size: 12px;
   color: #888;
-  margin: 0 0 10px;
+  margin: 0 0 12px;
 }
- 
+
 .plan-precio {
   display: flex;
   align-items: baseline;
-  gap: 3px;
-  margin-bottom: 14px;
+  flex-wrap: nowrap;
+  gap: 4px;
+  margin-bottom: 16px;
 }
- 
+
 .plan-monto {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 800;
   color: #1a1a1a;
-  white-space: nowrap; 
+  white-space: nowrap;
 }
- 
+
 .plan-periodo {
   font-size: 12px;
   color: #888;
+  white-space: nowrap;
 }
- 
+
 .plan-features {
   list-style: none;
   padding: 0;
-  margin: 0 0 16px;
+  margin: 0 0 20px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
- 
+  gap: 8px;
+
   li {
     font-size: 13px;
     color: #555;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 6px;
-    line-height: 1.3;
+    line-height: 1.4;
   }
 }
- 
+
 .check {
   color: #059669;
   font-weight: 700;
   flex-shrink: 0;
+  margin-top: 1px;
 }
- 
+
 .btn-plan {
   width: 100%;
-  padding: 9px;
+  padding: 10px;
   border: 1px solid #534AB7;
   border-radius: 8px;
   background: #fff;
@@ -341,31 +366,37 @@ textarea {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
- 
+
   &:hover:not(:disabled) { background: #f5f3ff; }
- 
+
   &.btn-plan-primary {
     background: #534AB7;
     color: #fff;
     &:hover:not(:disabled) { background: #6c63d4; }
   }
- 
+
   &:disabled { opacity: 0.6; cursor: not-allowed; }
 }
- 
+
 .btn-saltar {
   background: none;
   border: none;
   color: #aaa;
   font-size: 13px;
   cursor: pointer;
-  margin-top: 4px;
+  margin-top: 8px;
   transition: color 0.2s;
   &:hover { color: #555; }
 }
- 
+
+// ── Responsive ────────────────────────────────────────────────────────────────
 @media (max-width: 768px) {
-  .registro-card.wide { max-width: 100%; }
-  .planes-grid { grid-template-columns: 1fr; }
+  .registro-card.wide {
+    max-width: 100%;
+    padding: 24px 16px;
+  }
+
+  .planes-grid {
+    grid-template-columns: 1fr;
+  }
 }
- 
