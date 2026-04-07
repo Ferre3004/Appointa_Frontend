@@ -159,6 +159,46 @@
       </div>
 
     </form>
-
+<!-- ── Paso 3: Elegir plan ── -->
+    <div *ngIf="paso === 3" class="paso-planes">
+      <h3 class="planes-titulo">Elegí tu plan</h3>
+      <p class="planes-sub">Cancelá cuando quieras. Sin permanencia.</p>
+ 
+      <div class="planes-grid">
+        <div
+          class="plan-card"
+          *ngFor="let plan of planes"
+          [class.destacado]="plan.destacado"
+          [class.seleccionado]="planSeleccionado === plan.id"
+        >
+          <div class="plan-badge" *ngIf="plan.destacado">Más popular</div>
+          <p class="plan-nombre">{{ plan.nombre }}</p>
+          <p class="plan-desc">{{ plan.descripcion }}</p>
+          <div class="plan-precio">
+            <span class="plan-monto">{{ plan.precio }}</span>
+            <span class="plan-periodo">{{ plan.periodo }}</span>
+          </div>
+          <ul class="plan-features">
+            <li *ngFor="let f of plan.features">
+              <span class="check">✓</span> {{ f }}
+            </li>
+          </ul>
+          <button
+            class="btn-plan"
+            [class.btn-plan-primary]="plan.destacado"
+            (click)="elegirPlan(plan.id)"
+            [disabled]="loading && planSeleccionado === plan.id"
+          >
+            {{ loading && planSeleccionado === plan.id ? 'Redirigiendo...' : 'Elegir ' + plan.nombre }}
+          </button>
+        </div>
+      </div>
+   <div class="alert-error" *ngIf="error">{{ error }}</div>
+ 
+      <button class="btn-saltar" (click)="saltarPago()">
+        Saltar por ahora →
+      </button>
+       </div>
+       
   </div>
 </div>

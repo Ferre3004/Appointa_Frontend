@@ -103,4 +103,12 @@ export class ApiService {
 editarNegocio(data: any): Observable<any> {
   return this.http.put(`${this.base}/admin/config/negocio`, data);
 }
+
+// LemonSqueezy
+checkout(plan: string): Observable<{ checkoutUrl: string }> {
+  return this.http.post<{ checkoutUrl: string }>(
+    `${this.base}/auth/checkout`,
+    { plan }
+  );
+}
 }

@@ -21,6 +21,7 @@ export class RegistroComponent {
   paso = 1;
   loading = false;
   error = '';
+  planSeleccionado = '';
 
   colores = [
     { hex: '#534AB7', nombre: 'Violeta' },
@@ -45,6 +46,53 @@ export class RegistroComponent {
     'Pilates / Yoga',
     'Crossfit',
     'Otro',
+  ];
+
+  planes = [
+    {
+      id: 'Basic',
+      nombre: 'Basic',
+      precio: 'ARS 9.999',
+      periodo: '/mes',
+      descripcion: 'Ideal para empezar',
+      destacado: false,
+      features: [
+        '1 profesional',
+        'Hasta 50 turnos / mes',
+        'Página de reservas pública',
+        'Recordatorios por WhatsApp',
+      ],
+    },
+    {
+      id: 'Individual',
+      nombre: 'Individual',
+      precio: 'ARS 4.999',
+      periodo: '/mes',
+      descripcion: 'Para independientes',
+      destacado: true,
+      features: [
+        '1 profesional',
+        'Turnos ilimitados',
+        'Página de reservas pública',
+        'Recordatorios por WhatsApp',
+        'Personalización completa',
+      ],
+    },
+    {
+      id: 'Premium',
+      nombre: 'Premium',
+      precio: 'ARS 15.999',
+      periodo: '/mes',
+      descripcion: 'Para equipos y negocios',
+      destacado: false,
+      features: [
+        'Profesionales ilimitados',
+        'Turnos ilimitados',
+        'Dashboard avanzado',
+        'Personalización completa',
+        'Soporte prioritario',
+      ],
+    },
   ];
 
   form1: FormGroup;
@@ -122,9 +170,8 @@ export class RegistroComponent {
           'auth_user',
           JSON.stringify({ nombre: res.nombre, rol: res.rol }),
         );
-        this.router.navigate(['/admin/configuracion'], {
-          queryParams: { onboarding: true },
-        });
+        this.loading = false;
+        this.paso = 3; // ← único cambio: va al paso 3 en lugar del dashboard
       },
       error: (err) => {
         this.error =
@@ -134,8 +181,31 @@ export class RegistroComponent {
     });
   }
 
+  elegirPlan(planId: string) {
+    this.planSeleccionado = planId;
+    this.loading = true;
+    this.error = '';
+
+    this.api.checkout(planId).subscribe({
+      next: (res) => {
+        window.location.href = res.checkoutUrl;
+      },
+      error: () => {
+        this.error = 'No se pudo iniciar el pago. Intentá de nuevo.';
+        this.loading = false;
+        this.planSeleccionado = '';
+      },
+    });
+  }
+
+  saltarPago() {
+    this.router.navigate(['/admin/configuracion'], {
+      queryParams: { onboarding: true },
+    });
+  }
+
   get slugPreview(): string {
-    return `appointa.com/r/${this.form1.get('slug')?.value || 'mi-negocio'}`;
+    return `prenotare.pro/r/${this.form1.get('slug')?.value || 'mi-negocio'}`;
   }
 
   isInvalid(form: FormGroup, field: string): boolean {
