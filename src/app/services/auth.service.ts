@@ -14,7 +14,11 @@ export class AuthService {
     return this.api.login(email, password).pipe(
       tap(res => {
         localStorage.setItem(this.TOKEN_KEY, res.token);
-        localStorage.setItem(this.USER_KEY, JSON.stringify({ nombre: res.nombre, rol: res.rol }));
+        localStorage.setItem(this.USER_KEY, JSON.stringify({ 
+          nombre: res.nombre, 
+          rol: res.rol,
+          suscripcionEstado: res.suscripcionEstado
+        }));
       })
     );
   }
@@ -37,4 +41,8 @@ export class AuthService {
     const u = localStorage.getItem(this.USER_KEY);
     return u ? JSON.parse(u) : null;
   }
+
+  get estaActivo(): boolean {
+  return this.getUser()?.suscripcionEstado === 'activa';
+}
 }

@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { AuthService } from '../../../services/auth.service';
+import { DemoOverlayComponent } from '../demo-overlay/demo-overlay.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-imports: [CommonModule, FormsModule, RouterModule],
+imports: [CommonModule, FormsModule, RouterModule, DemoOverlayComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })

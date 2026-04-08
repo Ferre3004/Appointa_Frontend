@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { AuthService } from '../../../services/auth.service';
 import { ImageUploadComponent } from '../../../shared/image-upload/image-upload.component';
+import { DemoOverlayComponent } from '../demo-overlay/demo-overlay.component';
 
 @Component({
   selector: 'app-configuracion',
@@ -20,6 +21,7 @@ import { ImageUploadComponent } from '../../../shared/image-upload/image-upload.
     FormsModule,
     ReactiveFormsModule,
     ImageUploadComponent,
+    DemoOverlayComponent,
   ],
   templateUrl: './configuracion.component.html',
   styleUrl: './configuracion.component.scss',
