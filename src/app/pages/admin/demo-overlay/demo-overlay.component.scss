@@ -49,3 +49,13 @@
 
   &:hover { background: #3f37a0; }
 }
+
+.btn-explorar {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: .85rem;
+  cursor: pointer;
+  margin-top: .5rem;
+  text-decoration: underline;
+}

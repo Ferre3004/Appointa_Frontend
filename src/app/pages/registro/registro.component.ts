@@ -6,7 +6,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
 
@@ -103,6 +103,7 @@ export class RegistroComponent {
     private api: ApiService,
     private auth: AuthService,
     private router: Router,
+      private route: ActivatedRoute,
   ) {
     this.form1 = this.fb.group({
       nombreNegocio: ['', Validators.required],
@@ -134,6 +135,11 @@ export class RegistroComponent {
         this.form1.get('slug')?.setValue(slug, { emitEvent: false });
       }
     });
+      this.route.queryParams.subscribe(params => {
+    if (params['paso'] === 'plan' && this.auth.getToken()) {
+      this.paso = 3;
+    }
+  });
   }
 
   siguientePaso() {
