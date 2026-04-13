@@ -2,10 +2,12 @@ import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-    {
+  {
     path: '',
     loadComponent: () =>
-      import('./pages/admin/landing/landing.component').then(m => m.LandingComponent),
+      import('./pages/admin/landing/landing.component').then(
+        (m) => m.LandingComponent,
+      ),
   },
   // Booking pública
   {
@@ -76,6 +78,14 @@ export const routes: Routes = [
       import('./pages/registro/registro.component').then(
         (m) => m.RegistroComponent,
       ),
+  },
+  {
+    path: 'upgrade',
+    loadComponent: () =>
+      import('./pages/registro/registro.component').then(
+        (m) => m.RegistroComponent,
+      ),
+    data: { modoUpgrade: true },
   },
   {
     path: 'admin/configuracion',
